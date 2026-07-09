@@ -43,7 +43,7 @@ Operational ephemeral facts may appear in the spec *only* in two cases:
 | **external coder workers** | The 5 CLIs in `docs/external-workers.md`. | partial (4/5 installed) |
 | **Mnemosyne** | Primary agent memory layer. | live (dashboard down — runtime-state) |
 | **GBrain** | Project substrate (in scope per J7 2026-07-09). | spec only (Phase P11) |
-| **Honcho** | Semantic memory stack. | **de-scoped** (J7 2026-07-09) |
+| **Honcho** | Semantic memory stack. | **decommission pending** (J7 2026-07-09: no combine-with-Mnemosyne needed; container still live, see `runtime-state.md` §2) |
 | **AMB** | Agent Mesh Bus (Redis broker on `:6380`). | Phase 1A live; Phase 1C partial |
 
 ## Supersedes

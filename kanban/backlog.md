@@ -31,7 +31,7 @@
 
 ## Epic E3 — Runtime ops (mapped to rollout phases)
 
-- [ ] E3-T1 Multiplex + Ashitaka :8643 (Phase P0) — owner: Ishii
+- [ ] E3-T1 Fix Ashitaka gateway binding :8643 (Phase P0, per ADR-0004) — owner: Ishii
 - [ ] E3-T2 wolfpack.nix adoption (Phase P1) — owner: Ishii + Okkoto
 - [ ] E3-T3 Mission Control revival (Phase P2, paused) — owner: Nago
 - [ ] E3-T4 Per-wolf Nextcloud identity (Phase P3) — owner: Nago + Ishii
@@ -45,3 +45,4 @@
 - [ ] E3-T12 GBrain substrate spec (Phase P11) — owner: San + Ashitaka
 - [ ] E3-T13 Talk routing fix (Phase P12) — owner: Ishii
 - [ ] E3-T14 Per-wolf git signing identities (Phase P13) — owner: Okkoto + Ishii
+- [ ] E3-T15 Decommission Honcho podman unit, reclaim :8000 (per J7 2026-07-09 shakedown D2; no Mnemosyne migration needed) — owner: Toki + Ishii

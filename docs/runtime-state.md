@@ -37,7 +37,7 @@
 | 3001 | 0.0.0.0 | Forgejo | OK (LAN); public 404 (Outpost Traefik bug — see Top 5) |
 | 3002 | (should be 0.0.0.0) | Mission Control (Hermes Workspace) | **DEAD** — service not running |
 | 3005 | 127.0.0.1 | Free Model Roundup (Python) | OK |
-| 8000 | 0.0.0.0 | Honcho API (podman) | OK; **de-scoped** per J7 2026-07-09 |
+| 8000 | 0.0.0.0 | Honcho API (podman) | **DECOMMISSION PENDING** — J7 confirmed 2026-07-09: no migration to Mnemosyne needed (Mnemosyne is the surviving canonical memory layer); container still running, needs stop + reclaim. Action: Toki/Ishii. |
 | 8001 | 127.0.0.1 | Sanctuary Launcher | OK |
 | 8081 | 0.0.0.0 | it-tools (podman) | OK |
 | 8096 | 0.0.0.0 | Jellyfin | OK |
