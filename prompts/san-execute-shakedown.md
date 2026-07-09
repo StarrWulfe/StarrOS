@@ -14,12 +14,10 @@ An external Claude shakedown audit (per `prompts/claude-shakedown.md`) has been 
 - **All cards below are wolf-mode.** Every one touches ADRs, canonical specs, the kanban schema, or the packet template — all `external coder workers: NEVER` territory per `docs/external-workers.md` §3. Do not mark any of them external-eligible.
 - Changes to ADRs, schema, or packet template carry `San + Jigo + J7` authority per `specs/starros-stack-spec.md` §4.1. Route accordingly.
 
-**Gate 0 — J7 decisions required before dependent cards may leave `clarified`:**
+**Gate 0 — RESOLVED (J7, 2026-07-09).** No decision briefs needed; skip straight to Lane A.
 
-- **D1 (blocks P0 / E3-T1):** multiplex target — single canonical gateway vs per-wolf default. Dossier issue #1. Output: ADR-0004 authored by J7 (San drafts, Jigo reviews), plus a one-line fix to `specs/starros-stack-spec.md` §2 item 3 and a retitle of E3-T1 to match.
-- **D2:** Honcho runtime fate — stop-and-archive vs keep-warm-until-date. Dossier issue #2. Output: decision recorded in `docs/runtime-state.md`, status word normalized across spec §3 / ADR-0003 glossary / runtime-state to a single term.
-
-Present D1 and D2 to J7 as your first output, each with the dossier's framing and a recommended default (dossier §4.6 items 1 and 3). Do not proceed past card-drafting on their dependents until J7 answers.
+- **D1 (multiplex target):** per-wolf gateways, canonical. See `decisions/0004-multiplex-target-per-wolf.md`. Spec §2 item 3 and E3-T1 already corrected in this PR.
+- **D2 (Honcho fate):** decommission, no Mnemosyne migration needed. See `docs/runtime-state.md` §2 and new card E3-T15 (owner: Toki + Ishii — this is an operational action, not a doc task; do not treat it as Lane A scope).
 
 **Lane A — pre-Sprint-0 hardening PR (one PR, one Jigo review):**
 
