@@ -7,7 +7,8 @@
 - Epic:
 - Owner wolf:
 - Reviewer wolf:
-- Implementation mode:
+- Implementation mode: (wolf | claude | opencode | kilocode | gemini | copilot)
+- **Report-back channel:** (default: project's Matrix room; see `docs/external-workers.md` §6)
 
 ## Goal
 
@@ -22,16 +23,17 @@ Describe the exact bounded objective.
 ## Scope
 
 ### Allowed paths
-- 
+-
 
 ### Forbidden paths
-- 
+-
 
 ## Constraints
 
 - Do not exceed the defined scope.
 - Do not change architecture unless explicitly authorized.
 - Preserve tests, lint, and typecheck health.
+- Honor `docs/external-workers.md` if `implementation_mode` is one of the external coder workers.
 
 ## Acceptance criteria
 
@@ -57,3 +59,4 @@ Describe the exact bounded objective.
 - Commands run + results
 - Risks / open questions
 - Ready for review? yes/no
+- **Cross-posted to** `card.report_back_channel` (the project's Matrix room).
