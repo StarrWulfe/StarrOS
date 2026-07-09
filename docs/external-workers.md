@@ -21,7 +21,7 @@ These are the only 5 external coder workers in scope as of 2026-07-09. Adding a 
 - **Allowed**: a card in `ready-for-implementation` or `in-external-implementation` state with a complete `packets/leaf-card-template.md` packet attached.
 - **Allowed scope**: exactly the `allowed_paths` in the packet.
 - **Required mode**: the leaf card's `implementation_mode` field is `claude` (or the appropriate tool name).
-- **Required authority**: the wolf named in the card's `owner_wolf` field is the operator who launches the worker.
+- **Required authority**: the wolf named in the card's `owner_wolf` field is the *named responsible* — they author the packet and own the outcome. The actual **operator** (the wolf who launches the worker in a sandboxed workspace) is fixed at **Okkoto** per §5.
 - **Required review**: Jigo (per `jigo-review` skill §0.5 config-first mandate) before merge.
 
 ## 3. When external coder workers may NOT be used
@@ -47,7 +47,7 @@ A card may not be marked `in-external-implementation` unless all of:
 Every external-worker artifact must pass:
 
 1. **San (preflight)**: packet completeness, scope match.
-2. **Okkoto (operator)**: worker launched in a sandboxed workspace (allowed paths only), token budget respected.
+2. **Okkoto (operator, fixed)**: worker launched in a sandboxed workspace (allowed paths only), token budget respected. Okkoto is the operator regardless of the card's `owner_wolf` — see §2 for the named-responsible vs operator distinction.
 3. **Jigo (post-flight)**: code matches `acceptance_criteria`; no scope violations; tests pass.
 
 If any of the three fail, the card returns to `changes-requested`.

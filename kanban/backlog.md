@@ -5,21 +5,22 @@
 
 ## Epic E0 — Foundations (doc-canon pass)
 
-- [ ] E0-T1 Finalize playbook (docs/playbook.md) — link companion docs
-- [ ] E0-T2 Finalize backlog structure (this file)
-- [ ] E0-T3 Finalize packet template (packets/leaf-card-template.md) — add `report_back_channel` field
-- [ ] E0-T4 San review and kanbanization
-- [ ] E0-T5 Spec cleanup + 5 new companion docs — author: San, reviewer: Jigo
+- [x] E0-T1 Finalize playbook (docs/playbook.md) — link companion docs
+- [x] E0-T2 Finalize backlog structure (this file)
+- [x] E0-T3 Finalize packet template (packets/leaf-card-template.md) — add `report_back_channel` field
+- [x] E0-T4 San review and kanbanization
+- [x] E0-T5 Spec cleanup + 5 new companion docs — author: San, reviewer: Jigo
 
 ## Epic E1 — StarrOS doc canon (this PR)
 
-- [ ] E1-T1 Trim `specs/starros-stack-spec.md` to integration-overview only — author: San
-- [ ] E1-T2 Author `docs/runtime-state.md` (live state) — author: San
-- [ ] E1-T3 Author `specs/gbrain-substrate.md` (project substrate) — author: San + Ashitaka
-- [ ] E1-T4 Author `docs/persistence-boundaries.md` (durable-info map) — author: San
-- [ ] E1-T5 Author `docs/external-workers.md` (CLI workers policy) — author: Okkoto + Jigo
-- [ ] E1-T6 Author `decisions/0003-canonical-spec-boundaries.md` — author: San + J7
-- [ ] E1-T7 Cross-file normalize (playbook, workflow, packet, prompts) — author: San
+- [x] E1-T1 Trim `specs/starros-stack-spec.md` to integration-overview only — author: San
+- [x] E1-T2 Author `docs/runtime-state.md` (live state) — author: San
+- [x] E1-T3 Author `specs/gbrain-substrate.md` (project substrate) — author: San + Ashitaka
+- [x] E1-T4 Author `docs/persistence-boundaries.md` (durable-info map) — author: San
+- [x] E1-T5 Author `docs/external-workers.md` (CLI workers policy) — author: Okkoto + Jigo
+- [x] E1-T6 Author `decisions/0003-canonical-spec-boundaries.md` — author: San + J7
+- [x] E1-T7 Cross-file normalize (playbook, workflow, packet, prompts) — author: San
+- [x] E1-T8 Jigo review of doc-canon PR pair — fixes addressed in PR-3
 
 ## Epic E2 — Data and orchestration
 
