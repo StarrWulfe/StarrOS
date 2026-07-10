@@ -24,7 +24,7 @@
 
 ## Epic E2 — Data and orchestration
 
-- [ ] E2-T1 GBrain substrate definition (DEDUP — see E3-T12; same deliverable)
+- [ ] E2-T1 GBrain substrate definition (DEDUP — see E3-T12; same deliverable; subsumed by E3-T12 after Phase P11 was added; kept visible for E0 audit trail)
 - [ ] E2-T2 Mnemosyne integration policy — owner: Kohroku
 - [ ] E2-T3 Kanban REST / backend adapter — owner: San + Okkoto
 - [ ] E2-T4 Wolf task execution flow (E2E diagram test) — owner: San
