@@ -61,3 +61,37 @@
 ## Epic E5 — Skill stub hardening lane (Jigo minor #6)
 
 - [ ] E5-T1 Open Epic E5 + author `documents/skill-stubs/{README.md, jigo-review.md, nixos-host-operations.md, j7-homelab-environment.md}` — author: San, reviewer: Jigo. See file-system kanban card `t_c9d4a6b2`. Triggered by Jigo review of PR #8 (top issue #6).
+
+## Epic E6 — AMB Substrate integration (per `specs/AMB-Substrate.md`; placement PR closes the design-contract half; implementation cards follow)
+
+> **Design contract:** `specs/AMB-Substrate.md` (placed in this PR). Sourced from external review of `a2a-amb-kanban-prexx-20260630` and reconciled with `kanban/board-schema.md`. Implementation cards below; see `specs/AMB-Substrate.md` §10 for the J7 decisions that block them.
+
+### E6 P — precondition
+
+- [ ] E6-P1 San — Flake hygiene fix (dirty `flake.lock`, NAR hash mismatch on `path:/home/san/.hermes/hermes-agent`). NOT an AMB defect; gates A3 config injector + B3 consumer daemon. **Block runtime lanes silently if not done first.**
+
+### E6 Lane 1 — make the bus carry traffic (per spec §9 items 1–3, D-AMB-4)
+
+- [ ] E6-L1-1 Ishii (wolf-mode) — Re-render the amb-redis ACL to grant per-wolf `+xadd` on own `:status`/`:dispatch` outbound + peer inbox channels; canonicalize on the colon form `amb:<wolf>:dispatch`; mark dotted `amb:wolf.<w>.*` legacy-to-retire; enforce D-AMB-3 (San-only broadcast at ACL). Gated on E6-P1.
+- [ ] E6-L1-2 Ishii + Okkoto (wolf-mode) — Deploy the B3 `hermes-amb-consumer@.service` so at least one wolf registers a group and end-to-end XADD→XREADGROUP→XACK runs. Gated on E6-P1 + E6-L1-1.
+
+### E6 Lane 2 — loop safety (per spec §5 + §6 rules 3–5; blocked on Gate 0)
+
+> Gate 0 decisions D-AMB-1, D-AMB-2 must be ratified by J7 before Lane 2 starts. L2-3..L2-5 are chained on L2-1.
+
+- [ ] E6-L2-1 Okkoto — Envelope v1.1: add `context_id` (required for multi-step) + promote `task_id` to header; pin stream field key to `data` (retire `e`); populate `message_id` post-XADD. Blocked on D-AMB-2. **Most external-worker-eligible card if any is.**
+- [ ] E6-L2-2 Okkoto + Ishii deploy (wolf-mode) — Classify-first gateway wiring: wire B2 `Disposition` to gateway action-set executor so `needs_llm_turn` is the ONLY path to an LLM turn; prohibit auto-invoke. Blocked on D-AMB-1.
+- [ ] E6-L2-3 Okkoto (wolf-mode) — Turn-budget guard: drop auto-messages once `context_id` exceeds budget (default 6); escalate to San/J7. Blocked on E6-L2-1.
+- [ ] E6-L2-4 Okkoto (wolf-mode) — Dedup / idempotency: implement `hermes_amb.dedup.DedupHelper`. Reprocessing a `message_id` is a no-op. Mandatory under at-least-once delivery.
+- [ ] E6-L2-5 Okkoto (wolf-mode) — Extend self-echo suppression from the Matrix-fallback path to the AMB broadcast/dispatch path.
+
+### E6 Lane 3 — state↔signal chain (per spec §7; blocked on Lane 1 + L2-1; founding-incident fix)
+
+> Lane 3 cannot be marked done until both E6 Lane 1 and E6-L2-1 land. The T11→Okkoto dispatch miss (`t_a637df43`) is the founding incident this lane resolves.
+
+- [ ] E6-L3-1 Okkoto + San — Kanban→AMB fan-out: add the ~45 LOC sibling row-diff branch in `kanban_watchers.py:113` to publish one event to `amb:kanban:task:completed` with `task_id` + `context_id` on `done` transitions.
+- [ ] E6-L3-2 San — San dispatch rule consumes `amb:kanban:task:completed`; if the card defines a next assignee, create the next card and write to `amb:<next>:dispatch`. Verify against `specs/AMB-Substrate.md` §7's loop-safety argument before marking done.
+
+### E6 Lane 4 — storm backstop (per spec §6; can run parallel)
+
+- [ ] E6-L4-1 Ishii (wolf-mode) — CircuitBreaker per `mnemosyne-boundary-crossings.md` §4 (N=3, T_dwell=300s, per-wolf, one-shot); trips outbound on storm; emits `amb:circuit:open`. Pair with Phase 1E `tests/amb-degradation.nix` nixosTest.

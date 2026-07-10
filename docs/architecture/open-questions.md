@@ -33,3 +33,34 @@ requirepass Bie0sYHP9TYLv9IvNUNXkGJpemCD5XKjk3u426HA
 **Out of scope here.** E3-T18 (this entry) only verifies Phase 1A is current and documents the transition. E3-T9 owns the Phase 1C ACL finalization itself (the open code-level work to make the upstream redis module honor `settings.aclfile`, plus the ACL narrowing pass). The two should not be merged.
 
 **Do NOT.** Do not change `requirepass` value or any ACL outside E3-T9. Both are destructive on the shared broker and require J7 sign-off via the standard Phase 1C ruling path.
+
+---
+
+## OQ-7 — When does the wolfpack adopt A2A-protocol wire compliance? (Q-status: WAIT)
+
+**Source / trigger.** `specs/AMB-Substrate.md` §8 (A2A alignment — position, not claim). J7 asked the external reviewer to surface this as an explicit `open-question` rather than a parked card.
+
+**Position today.** The wolfpack is **not** A2A-compliant, and should not chase full wire-compliance now:
+- Internal "agent cards" share almost no schema with A2A `AgentCard` and aren't served anywhere.
+- `payload.task_id` looks like A2A's `taskId` but is payload-level with no task object behind it.
+- AMB transport is Redis Streams, not JSON-RPC-2.0-over-HTTP — full compliance means either replacing Streams (throwing away persistence, at-least-once, ACLs) or building an A2A-facade gateway that translates.
+- For an internal 11-wolf pack under end-to-end control, A2A wire-compliance is premature. The facade is the right *eventual* move but only earns its keep when talking to **external** agents.
+
+**What we adopt now, regardless of wire format** (load-bearing for loop safety, not optional decoration):
+- A2A's task lifecycle model (submitted, working, input_required, auth_required, completed, failed, canceled, rejected) — the terminal/interrupt states. Map the Kanban state set (`todo/in_progress/done/blocked/archived`) onto this model and treat a task as terminating. Spec source: §8 of `specs/AMB-Substrate.md`; see `kanban/backlog.md` L2-1 for the card-format envelope bump that makes this enforceable on every emit.
+- `contextId` promoted to required header — drives the turn-budget loop guard (L2-3).
+
+**Defer** until the first compatible upstream release:
+- `role` + `parts[]` message shape
+- `/.well-known/agent-card.json` serving
+- JSON-RPC transport
+- SSE / webhook
+- `a2a_tool.py` and the Phase 1D external-agent-facing path
+
+**Gating trigger** (re-evaluation):
+- First compatible upstream `a2a-sdk` release that is actually usable from Python 3.12 with `redis-py 8.0.1` (the current AMB client) AND provides an internal-wolfpack-shaped `AgentCard` schema we can serve without rewriting our plumbing.
+- OR a concrete inbound request from an external agent that needs to consume AMB messages (e.g. a J7-initiated cross-agent collaboration with a non-wolfpack system).
+
+When that trigger fires, this entry becomes `decisions/000N-a2a-adoption-decision.md` and the work opens as a new epic (current estimate: ≤ 6 weeks work + 1 week migration + 1 week shadow-validation against AMB-fed traffic). Until then, keep parked.
+
+**Do NOT.** Do not start a `a2a_tool.py` module, do not add JSON-RPC endpoints, do not serve `/.well-known/agent-card.json` until the trigger fires. Speculative adoption is exactly the failure mode this entry exists to prevent.
