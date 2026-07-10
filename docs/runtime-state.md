@@ -37,7 +37,7 @@
 | 3001 | 0.0.0.0 | Forgejo | OK (LAN); public 404 (Outpost Traefik bug — see Top 5) |
 | 3002 | (should be 0.0.0.0) | Mission Control (Hermes Workspace) | **DEAD** — service not running |
 | 3005 | 127.0.0.1 | Free Model Roundup (Python) | OK |
-| 6380 | 127.0.0.1 | AMB (Redis broker, agent mesh bus) | partial — Phase 1A live; Phase 1C ACL finalization in progress (P8) |
+| 6380 | 127.0.0.1 | AMB (Redis broker, agent mesh bus) | partial — Phase 1A live; Phase 1C ACL finalization in progress (P8). **See §2.1 below** for live ACL users, current stream state, and what Phase 1A → 1C actually means in practice. Design contract in `specs/AMB-Substrate.md`; this row is the live map only. |
 | 8000 | 0.0.0.0 | Honcho API (podman) | **DECOMMISSION PENDING** — J7 confirmed 2026-07-09: no migration to Mnemosyne needed (Mnemosyne is the surviving canonical memory layer); container still running, needs stop + reclaim. Action: Toki/Ishii. |
 | 8001 | 127.0.0.1 | Sanctuary Launcher | OK |
 | 8081 | 0.0.0.0 | it-tools (podman) | OK |
@@ -54,6 +54,59 @@
 **Outpost:** Synapse 8008 (proxied via Traefik at `mtrx.starrwulfe.xyz`); Traefik 80/443; Pocket ID 1411; Karakeep on its own bind (port not on Mononoke).
 
 **Yoseba:** Headscale 8080; Stalwart 25/465/587/993; YOURLS 80.
+
+## 2.1 AMB — live ACL users, streams, and Phase 1A → 1C gulf (2026-07-10 probe, ishii@run-13)
+
+**Design contract:** `specs/AMB-Substrate.md` §2 (broker & transport), §3 (channel topology), §7 (state↔signal wiring), §9 (current-state gulf). This section is the live mirror.
+
+### Auth posture
+
+- Module: `services.redis.servers.amb` (Phase 1A, deployed). Rendered config at `/run/redis-amb/nixos.conf` contains exactly two effective directives:
+  ```
+  include "/nix/store/avy38wgs8xjskssak0xnwbx124077974-redis.conf"
+  requirepass Bie0sYHP9TYLv9IvNUNXkGJpemCD5XKjk3u426HA
+  ```
+- `aclfile` directive is **declared in `amb-redis.nix` line 102 but not emitted** to the rendered broker config — the upstream NixOS redis module's prep-conf only writes `requirepass`, not `aclfile`. So Phase 1A = plain `requirepass` against all wolves.
+- `requirepass` materialises from the agenix slot `amb-redis-password` at `/run/agenix/amb-redis-password`. All wolfpack AMB clients share this single credential in Phase 1A.
+
+### Live ACL users (`redis-cli -p 6380 ACL LIST`, abbreviated)
+
+| User | Phase | Permissions | Source |
+|---|---|---|---|
+| `default` | Phase 1A | `+@all` (single shared `requirepass` against the default ACL user) | auto-default |
+| (11 user rows planned in Phase 1C: `san`, `ashitaka`, `ishii`, `jigo`, `kohroku`, `mokku`, `moro`, `nago`, `okkoto`, `toki`, `yakkuru`) | Phase 1C | `+xadd` on own `amb:<wolf>:status` + `:dispatch`; per-wolf `+xreadgroup` on assigned inboxes; `amb:pack.broadcast` = San-only | agenix slot `amb-redis-<wolf>-password` per wolf |
+
+**Today (Phase 1A):** no per-wolf users are wired at the broker. ACL ENFORCEMENT = single shared `requirepass`.
+
+### Live streams (canonical from `specs/AMB-Substrate.md` §3, status notes)
+
+|| Stream | Kind | Producer ACL | Consumer ACL | Today |
+||---|---|---|---|---|---|
+|| `amb:pack.broadcast` | broadcast | San-only (D-AMB-3) | all wolves, non-respondable | present (~41 entries per §1 of spec) |
+|| `amb:<wolf>:dispatch` | inbox | San + any wolf | owner wolf | READ-ONLY — wolves lack `+xadd` (Phase 1C top blocker) |
+|| `amb:<wolf>:status` | outbox | owner wolf | San + interested wolves | READ-ONLY — same |
+|| `amb:<wolf>:handoff` | inbox | any wolf | owner wolf | READ-ONLY — same |
+|| `amb:<wolf>:escalation:c{4,5}` | inbox | risk-triager dim | owner wolf + San | READ-ONLY — same |
+|| `amb:kanban:task:{created,completed,blocked}` | signal | kanban-watcher (future L3-1) | San + dispatch rules | not produced yet |
+|| `amb:system.heartbeat` | signal | consumer daemons (future L1-2) | San / observability | not produced yet |
+|| `amb:circuit:{open,closed}` | signal | circuit breaker (future L4-1) | all wolves | not produced yet |
+|| `amb:stuck` | signal | broker/daemon | San | not produced yet |
+
+**Dotted legacy `amb:wolf.<w>.*`** channels exist but are superseded by the colon form per the canonical spec.
+
+### Consumer groups
+
+- Phase 1A status: **0 consumer groups registered** on any stream (`groups: 0`). Bus is built and proven on the wire; it is **not** carrying end-to-end traffic yet. The B3 daemon template exists but no per-wolf unit is running. This is L1-2.
+
+### Bridging the gulf — what Phase 1C must do
+
+1. Render `aclfile /nix/store/...-amb-redis-acl-on.conf` (current upstream Nix module is silently dropping this directive — needs a module-side fix).
+2. Wire 11 per-wolf agenix secrets to broker ACL users, each with `+xadd` only on its own `amb:<wolf>:status` + `:dispatch` outbound + the peer inboxes it hands off to.
+3. Enforce San-only on `amb:pack.broadcast` at ACL, not by convention (D-AMB-3).
+4. Demote `requirePassFile` in `amb-redis.nix` line 81 — when `aclfile` loads, Redis 8 IGNORES `requirepass`, and leaving it set is misleading.
+5. Default-user narrowing (D-AMB-1 invariant): after aclfile supersedes requirepass, `default` becomes operator-only.
+
+**Track:** Sprint-0 close-out `E3-T9-FU2` (requirePassFile demotion, in flight, ishii T+sign-off). Full closure = E3-T9 → done + Open Question OQ-1 strikethrough → `decisions/0005-amb-phase1c-completion.md`.
 
 ## 3. Major broken / degraded items (top 5 by impact)
 

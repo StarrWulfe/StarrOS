@@ -44,7 +44,7 @@ Operational ephemeral facts may appear in the spec *only* in two cases:
 | **Mnemosyne** | Primary agent memory layer. | live (dashboard down — runtime-state) |
 | **GBrain** | Project substrate (in scope per J7 2026-07-09). | spec only (Phase P11) |
 | **Honcho** | Semantic memory stack. | **decommission pending** (J7 2026-07-09: no combine-with-Mnemosyne needed; container still live, see `runtime-state.md` §2) |
-| **AMB** | Agent Mesh Bus (Redis broker on `:6380`). **Phase 1A** = broker live + plain requirepass; **Phase 1C** = per-wolf ACL material finalized (current P8 scope). | Phase 1A live; Phase 1C partial |
+| **AMB** | Agent Mesh Bus — wolf-to-wolf signal mesh on Redis Streams (broker on `:6380`, Mononoke `127.0.0.1`). Design contract: `specs/AMB-Substrate.md` (live ACL/streams/runtime details in `docs/runtime-state.md` §2; state↔signal wiring rules in the same spec §7). | Phase 1A live; Phase 1C partial — see AMB Substrate spec §9 for current-state gulf + §10 for open decisions |
 
 ## Supersedes
 

@@ -57,7 +57,7 @@ StarrOS is the AI workspace and control plane for Mononoke. It binds together th
 | Matrix Synapse (Outpost) | Real-time comms | Okkoto + Ishii (provisioning) | yes |
 | Stalwart mail (Yoseba) | Per-wolf mailboxes | Yakkuru (PIM) | yes (mailboxes declared; IMAP IDLE not wired) |
 | SearXNG (`search.starrwulfe.xyz`) | Web search | San (consumer) | yes |
-| **AMB** (Agent Mesh Bus) | Redis broker for wolf-to-wolf messaging (`:6380`, P8 ACL finalization) | Ishii | partial (Phase 1A live, Phase 1C partial) |
+| **AMB** (Agent Mesh Bus) | Wolf-to-wolf signal mesh on Redis Streams (`:6380`, Mononoke `127.0.0.1`). **Design contract:** `specs/AMB-Substrate.md` (§2 broker, §3 channel topology, §4 envelope, §5 gateway handler contract, §6 anti-loop rules, §7 state↔signal wiring, §9 current-state gulf, §10 open decisions). **Core invariant:** signals on the bus, state on the blackboard — wolves do not conversationally reply to each other; a card transition emits at most one signal. | Ishii (NixOS / ACL) + Okkoto (handler / dedup) | partial (Phase 1A live; Phase 1C ACL finalization in progress) |
 
 **Historical-only (not in target scope):** Honcho (semantic memory stack — decommission pending 2026-07-09, see `docs/runtime-state.md` §2; container still running, stop is an outstanding action item); Hermes Workspace flake input (intentionally killed 2026-07-09 — not the same as the target `Mission Control` row above; see ADR 0003 for terminology).
 
@@ -167,6 +167,8 @@ StarrOS is the AI workspace and control plane for Mononoke. It binds together th
 | **Mission Control source** | `~/.hermes/hermes-workspace-src/` | Nago |
 | **Mission Control NixOS module** | `/etc/nixos/nix/services/hermes-workspace.nix` | Ishii |
 | **GBrain substrate** | `specs/gbrain-substrate.md` | TBD (Phase P11) |
+| **AMB broker ACL and module** | `/etc/nixos/nix/services/amb-redis.nix` | Ishii |
+| **AMB Substrate (design contract)** | `specs/AMB-Substrate.md` | Okkoto (commander) + Ishii (NixOS) + San (orchestrator) |
 | **Runtime state** | `docs/runtime-state.md` | San + Kohroku |
 | **Persistence boundaries** | `docs/persistence-boundaries.md` | San |
 | **External coder workers policy** | `docs/external-workers.md` | Okkoto |
@@ -199,6 +201,11 @@ The detailed phase plan lives in `kanban/backlog.md`. Headline:
 | P11 | GBrain substrate spec | **not started — this PR's companion spec** |
 | P12 | Talk routing fix | not started |
 | P13 | Per-wolf git signing identities | not started |
+| **P-AMB-P** | **AMB Lane P** flake-hygiene fix (dirty `flake.lock`, NAR hash mismatch on `path:/home/san/.hermes/hermes-agent`) — gates A3 config injector + B3 consumer daemon | not started (San) |
+| **P8-AMB-L1** | **AMB Lane 1** make the bus carry traffic: L1-1 write-side ACL (Ishii), L1-2 first per-wolf consumer group (Ishii+Okkoto). Gated on P-AMB-P. | not started |
+| **P8-AMB-L2** | **AMB Lane 2** loop safety: L2-1 envelope v1.1 (Okkoto), L2-2 classify-first gateway wiring (Okkoto+Ishii deploy), L2-3 turn-budget guard (Okkoto), L2-4 dedup helper (Okkoto), L2-5 self-echo extension (Okkoto). Blocked on D-AMB-1/D-AMB-2 (Gate 0); L2-3..L2-5 chained on L2-1. | not started |
+| **P8-AMB-L3** | **AMB Lane 3** state↔signal chain (founding incident fix, T11→Okkoto miss `t_a637df43`): L3-1 kanban→AMB fan-out (Okkoto+San), L3-2 San dispatch rule consumes `amb:kanban:task:completed` (San). Blocked on P8-AMB-L1 + L2-1; cannot mark done until both. | not started |
+| **P8-AMB-L4** | **AMB Lane 4** storm backstop: L4-1 CircuitBreaker (Ishii) per `mnemosyne-boundary-crossings.md` §4 (N=3, T_dwell=300s, per-wolf, one-shot) + Phase 1E `tests/amb-degradation.nix` nixosTest. Can run parallel with Lanes 2/3. | not started |
 
 Detailed per-card work, owner_wolf, and reviewer_wolf: see `kanban/backlog.md`.
 
