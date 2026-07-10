@@ -57,6 +57,7 @@ StarrOS is the AI workspace and control plane for Mononoke. It binds together th
 | Matrix Synapse (Outpost) | Real-time comms | Okkoto + Ishii (provisioning) | yes |
 | Stalwart mail (Yoseba) | Per-wolf mailboxes | Yakkuru (PIM) | yes (mailboxes declared; IMAP IDLE not wired) |
 | SearXNG (`search.starrwulfe.xyz`) | Web search | San (consumer) | yes |
+| **AMB** (Agent Mesh Bus) | Redis broker for wolf-to-wolf messaging (`:6380`, P8 ACL finalization) | Ishii | partial (Phase 1A live, Phase 1C partial) |
 
 **Historical-only (not in target scope):** Honcho (semantic memory stack — decommission pending 2026-07-09, see `docs/runtime-state.md` §2; container still running, stop is an outstanding action item); Hermes Workspace flake input (intentionally killed 2026-07-09 — not the same as the target `Mission Control` row above; see ADR 0003 for terminology).
 
@@ -211,12 +212,14 @@ Detailed per-card work, owner_wolf, and reviewer_wolf: see `kanban/backlog.md`.
 
 ## 13. Recommendations (non-binding)
 
-- **Add `docs/runtime-state.md` and `docs/persistence-boundaries.md` to the `prompts/san-handoff.md` reading list** so future San runs ingest them as ground truth.
 - **Reduce the spec drift rate** by re-running the cleanup pass whenever a new doc is added; link from `decisions/0003-canonical-spec-boundaries.md`.
 - **Treat `kanban/backlog.md` as the authoritative per-phase plan**; this spec links to it, not the other way around.
 
+> **Status:** the prior first recommendation (add `runtime-state.md` + `persistence-boundaries.md` to `prompts/san-handoff.md`) was implemented in PR #2 (see `prompts/san-handoff.md` items 3 and 5) and is therefore removed from this list.
+
 ## 14. Provenance
 
-- v1.0 (2201 bytes, J7 original) — commit sha `908aae4a4b…` on `main`
-- v1.1 (26995 bytes, San canonicalization) — commit `21dee6d` on branch `spec/starros-stack-canonicalization` (PR #1, open)
-- v2.0 (this revision, doc-canon pass) — pending (PR #2)
+- v1.0 (2201 bytes, J7 original) — **blob** sha `908aae4a4b…` on `main` (pre-history; this file's first versioned commit is `cdaaa02`)
+- v1.1 (26995 bytes, San canonicalization) — commit `21dee6d` (PR #1, **merged** at `99b5b49`)
+- v2.0 (this revision, doc-canon pass) — commits `8e376e5` + `b55107d` (PR #2, **merged** at `d6d0595`)
+- v2.1 (pre-Sprint-0 hardening, ADR-0004 multiplex per-wolf, post-shakedown sweep) — branch `docs/pre-sprint0-hardening`

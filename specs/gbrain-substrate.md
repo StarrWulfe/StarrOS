@@ -1,6 +1,6 @@
 # GBrain Substrate
 
-> **Status:** DRAFT (2026-07-09) — in scope per J7 directive 2026-07-09. No implementation yet. See `kanban/backlog.md` E1-T5 + rollout Phase P11.
+> **Status:** DRAFT (2026-07-09) — in scope per J7 directive 2026-07-09. No implementation yet. See `kanban/backlog.md` E1-T3 (GBrain spec authoring) + rollout Phase P11.
 > **Owner:** TBD (J7 to assign — likely Ashitaka for orchestration, Okkoto for build).
 > **Related:** `specs/starros-stack-spec.md` §8 (memory), `docs/persistence-boundaries.md`, `kanban/backlog.md`.
 

@@ -24,7 +24,7 @@
 
 ## Epic E2 — Data and orchestration
 
-- [ ] E2-T1 GBrain substrate definition (was "OKF/GBrain") → see `specs/gbrain-substrate.md`
+- [ ] E2-T1 GBrain substrate definition (DEDUP — see E3-T12; same deliverable)
 - [ ] E2-T2 Mnemosyne integration policy — owner: Kohroku
 - [ ] E2-T3 Kanban REST / backend adapter — owner: San + Okkoto
 - [ ] E2-T4 Wolf task execution flow (E2E diagram test) — owner: San
@@ -46,3 +46,14 @@
 - [ ] E3-T13 Talk routing fix (Phase P12) — owner: Ishii
 - [ ] E3-T14 Per-wolf git signing identities (Phase P13) — owner: Okkoto + Ishii
 - [ ] E3-T15 Decommission Honcho podman unit, reclaim :8000 (per J7 2026-07-09 shakedown D2; no Mnemosyne migration needed) — owner: Toki + Ishii
+- [ ] E3-T16 Outpost Traefik fix, re-sequenced ahead of Sprint 0 (dossier rec #6, pre-Sprint-0 hardening B1) — supersedes E3-T11 sequencing; owner: Ishii + Toki; **gate: J7 sign-off if change window is risky**; peer-host discipline (Outpost admin path, not Mononoke). One-line sed + Traefik HUP per `docs/runtime-state.md` §3 #3.
+
+## Epic E4 — Pre-Sprint-0 hardening lane (this PR)
+
+- [x] E4-A1 board-schema: add `forbidden_paths` + `report_back_channel` + legal-transition table — author: San, reviewer: Jigo
+- [x] E4-A2 GBrain dedup (E2-T1 vs E3-T12) + E1-T5 → E1-T3 citation fix — author: San, reviewer: Jigo
+- [x] E4-A3 cross-reference sweep + Mnemosyne restart procedure + spec §13/§14 provenance + README milestones + delete `TREE.txt` (Mnemosyne restart pick pending Kohroku) — author: San, reviewer: Jigo
+- [x] E4-A4 AMB visibility in spec §3 + runtime-state §2 port map + Phase 1A/1C labels defined — author: Ishii, reviewer: Jigo
+- [x] E4-A5 example packets: stamp Mission-Control examples HISTORICAL + add Report-back channel field — author: Okkoto, reviewer: Jigo
+- [x] E4-A6 Jigo minors #2 (profile.yaml template/instance) + #4 (hermes-workspace-src disambiguation) — author: San, reviewer: Jigo
+- [x] E4-B1 re-sequence Outpost Traefik fix ahead of Sprint 0 (see E3-T16) — author: San, reviewer: Jigo
