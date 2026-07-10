@@ -57,3 +57,7 @@
 - [x] E4-A5 example packets: stamp Mission-Control examples HISTORICAL + add Report-back channel field — author: Okkoto, reviewer: Jigo
 - [x] E4-A6 Jigo minors #2 (profile.yaml template/instance) + #4 (hermes-workspace-src disambiguation) — author: San, reviewer: Jigo
 - [x] E4-B1 re-sequence Outpost Traefik fix ahead of Sprint 0 (see E3-T16) — author: San, reviewer: Jigo
+
+## Epic E5 — Skill stub hardening lane (Jigo minor #6)
+
+- [ ] E5-T1 Open Epic E5 + author `documents/skill-stubs/{README.md, jigo-review.md, nixos-host-operations.md, j7-homelab-environment.md}` — author: San, reviewer: Jigo. See file-system kanban card `t_c9d4a6b2`. Triggered by Jigo review of PR #8 (top issue #6).
