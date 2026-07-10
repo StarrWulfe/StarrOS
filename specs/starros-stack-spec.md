@@ -30,8 +30,8 @@ StarrOS is the AI workspace and control plane for Mononoke. It binds together th
 
 1. **San is the sovereign orchestrator.** All inbound requests land on San first; San classifies via `wolf-council-routing` and either handles solo or dispatches to wolves.
 2. **The wolfpack is ten specialized wolves** with separate Hermes profiles (`~/.hermes/profiles/<wolf>/`), each with its own `SOUL.md`, `config.yaml`, `.env`, `state.db`, `skills/` mount, Matrix identity, Stalwart mailbox, and Telegram bot. Wolves are real runtime identities, not prompt personas.
-3. **Multiplex state (target):** a single canonical `hermes-gateway.service` (system unit) holds the API server. Per-wolf units are an on-demand option; the canonical default is one gateway per active wolf. Coexistence drift is a known issue; see `docs/runtime-state.md` §"Multiplex" for the current work-around and Phase P1 of the rollout for the fix.
-4. **Mission Control** is the workspace shell. It is currently paused; see `docs/runtime-state.md` §"Mission Control — paused" and the rollout's Phase P2.
+3. **Gateway state (target, per ADR-0004):** the canonical default is **one gateway per active wolf** (`hermes-gateway@<wolf>.service` units). Multiplexing wolf traffic through a single gateway was attempted and not adopted — see ADR-0004. Coexistence drift is a known issue; see `docs/runtime-state.md` §2 (service map) and §3 (broken/degraded) for current status, and Phase P0 of the rollout for the fix (scope: bind Ashitaka's `:8643` unit; no multiplex-adoption work).
+4. **Mission Control** is the workspace shell. It is currently paused; see `docs/runtime-state.md` §2 (service map, row: Mission Control) and the rollout's Phase P2.
 5. **The stock Hermes Dashboard** (Mononoke `:9119`) is a tab inside Mission Control when Mission Control is live, and an independent operational surface until then.
 6. **Mononoke is the primary host** for deployment, runtime, and the NixOS service definition layer. Outpost and Yoseba host delegated services (Synapse, Stalwart, headscale, etc.).
 7. **Repo-backed planning is the source of truth** (ADR 0001). Chat, Mnemosyne, and per-profile state DBs are operational stores, not planning stores.
@@ -58,7 +58,7 @@ StarrOS is the AI workspace and control plane for Mononoke. It binds together th
 | Stalwart mail (Yoseba) | Per-wolf mailboxes | Yakkuru (PIM) | yes (mailboxes declared; IMAP IDLE not wired) |
 | SearXNG (`search.starrwulfe.xyz`) | Web search | San (consumer) | yes |
 
-**Historical-only (not in target scope):** Honcho (semantic memory stack — removed 2026-07-09); Hermes Workspace flake input (intentionally killed 2026-07-09 — not the same as the target `Mission Control` row above; see ADR 0003 for terminology).
+**Historical-only (not in target scope):** Honcho (semantic memory stack — decommission pending 2026-07-09, see `docs/runtime-state.md` §2; container still running, stop is an outstanding action item); Hermes Workspace flake input (intentionally killed 2026-07-09 — not the same as the target `Mission Control` row above; see ADR 0003 for terminology).
 
 ## 4. Execution model
 
@@ -184,7 +184,7 @@ The detailed phase plan lives in `kanban/backlog.md`. Headline:
 
 | Phase | Title | Status |
 |---|---|---|
-| P0 | Stabilize multiplex + fix Ashitaka port 8643 | in progress |
+| P0 | Fix Ashitaka gateway binding, port 8643 (per ADR-0004; multiplex adoption dropped) | in progress |
 | P1 | wolfpack.nix adoption | planned |
 | P2 | Mission Control revival | paused (J7 2026-07-09) |
 | P3 | Per-wolf Nextcloud identity | not started |
