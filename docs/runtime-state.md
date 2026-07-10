@@ -57,7 +57,13 @@
 
 ## 3. Major broken / degraded items (top 5 by impact)
 
-1. **Mnemosyne dashboard `:8765` down.** Memory write-side works, audit/read-side dark. **Phase P4.** Restart procedure: **`bsm-secret-fetch-for-environmentfile.sh` helper is the canonical restart command** (supersedes the older `nixos-host-operations` skill reference, which was the second-source duplication flagged in the Claude shakedown audit). **TODO [NEEDS-KOHROKU]:** confirm this is still current; the helper script may have been renamed/moved since the dossier was authored (2026-07-09). San will ping Kohroku before Sprint 0 opens.
+1. **Mnemosyne dashboard `:8765` down.** Memory write-side works, audit/read-side dark. **Phase P4.** Restart procedure: use the `mnemosyne_dashboard_start` Hermes tool (canonical source: `operations/mononoke-systems-check/SKILL.md:226`). Sequence:
+   ```bash
+   ss -tlnp | grep 8765      # check if running
+   mnemosyne_dashboard_start  # starts dashboard on 0.0.0.0:8765
+   curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:8765/  # expect 200
+   ```
+   The Mnemosyne SQLite DB at `~/.hermes/mnemosyne/data/mnemosyne.db` persists across crashes — only the UI process needs restart. **Note:** The `bsm-secret-fetch-for-environmentfile.sh` script is unrelated — it is the `ExecStartPre=` template for loading BWS secrets into systemd environment files, not a Mnemosyne restart helper.
 2. **Ashitaka port `:8643` unbound.** PID 20888 alive but no listener. The default port assignment in `wolfpack.nix` places ashitaka on `:8643`. Other 9 wolves bind correctly. **Phase P0.**
 3. **`code.starrwulfe.xyz` 404.** Outpost Traefik `dynamic.toml` points to `127.0.0.1:3001` instead of `100.77.7.1:3001`. One-line sed + Traefik HUP. **Phase P10.**
 4. **Mission Control dead (target: paused).** Per J7 directive 2026-07-09: do not allocate resources now. Source kept at `hermes-workspace-src/`. **Phase P2 deferred.**
