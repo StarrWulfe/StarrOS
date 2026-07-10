@@ -13,7 +13,7 @@
 | Per-wolf session transcript (current conversation) | `~/.hermes/profiles/<wolf>/state.db` (SQLite) | the wolf writes on every turn | the wolf + session_search | Rolling; 90d retention | current Telegram DM |
 | Pack telemetry (counts, errors, last-seen per wolf) | `wolfpack.db` (SQLite, declared by `wolfpack.nix` activationScript) | per-wolf gateway writes on activity | Mission Control dashboard (Phase P2) + San | Indefinite (rotates after 1y) | wolf row in `wolves` table |
 | Agent memory (lessons, claims, scratch) | Mnemosyne (`~/.hermes/mnemosyne/data/mnemosyne.db`) | `mnemosyne_remember` (per-wolf) | any wolf via `mnemosyne_recall` | BEAM tiers; rolling episodic | "Ashitaka routing heuristic" |
-| Project substrate (per-project decisions, spec history, open questions) | **GBrain** (TBD) — `specs/gbrain-substrate.md` | per-wolf `gbrain_client` API; project-Matrix-bot listener | San + project owner + J7 | Indefinite (append-only) | "E1-T5 GBrain spec drafted 2026-07-09" |
+| Project substrate (per-project decisions, spec history, open questions) | **GBrain** (TBD) — `specs/gbrain-substrate.md` | per-wolf `gbrain_client` API; project-Matrix-bot listener | San + project owner + J7 | Indefinite (append-only) | "E1-T3 GBrain spec authored 2026-07-09" |
 | Bookmark / link archive | Karakeep (`keep.starrwulfe.xyz`) | Mokku or any wolf via OIDC | any wolf + J7 | Indefinite | tagged bookmarks under `mokku/` |
 | Real-time colab docs | CryptPad (TBD) | per-wolf (Phase P7) | any wolf + J7 | Indefinite | shared CryptPad for the Megapack design review |
 | Long-form docs (current/vault) | Nextcloud (`cloud.gatewood.xyz`) | per-wolf via OIDC (Phase P3) | any wolf + J7 | Indefinite | `/Megapack/Playbook-2026-Q3.md` |
@@ -31,4 +31,5 @@
 
 - **Mnemosyne and GBrain are siblings**, not parent/child. Mnemosyne = agent memory; GBrain = project memory.
 - **Per-profile `state.db` is ephemeral** — it is the live conversation, not the durable record. After 90d it rolls; for long-term storage, the wolf or San should `mnemosyne_remember` the durable parts.
-- **Heroes are 12, not 13.** Honcho is removed from scope per J7 2026-07-09 (see `docs/runtime-state.md` §"De-scoped" historical note).
+- **`profile.yaml` template vs instance** — the **template** lives in `~/.hermes/wolf-souls/_profile-template.yaml` (staging tree); **instances** live in `~/.hermes/profiles/<wolf>/profile.yaml` (canonical, what runtime reads). Per-wolf instances are seeded by `wolfpack.nix` activationScript from the template and signed off by San on change. See `docs/runtime-state.md` §6 for the staging/canonical distinction.
+- **Heroes are 12, not 13.** Honcho is removed from scope per J7 2026-07-09; see `docs/runtime-state.md` §2 (Honcho API row) and §3 (decommission pending item). Container still bound to `:8000`; tracked as `kanban/backlog.md` E3-T15.

@@ -37,14 +37,14 @@ Operational ephemeral facts may appear in the spec *only* in two cases:
 | **StarrOS** | The whole project. | live |
 | **wolfpack** | San + 10 wolves. | live |
 | **Mission Control** | The target workspace shell (Next.js 15). | **paused** (J7 2026-07-09) |
-| **Hermes Workspace** | The upstream `inputs.hermes-workspace` flake input that the Mission Control NixOS module imports. | **killed** (J7 2026-07-09, intentionally — not the same as Mission Control) |
+| **Hermes Workspace** | The upstream `inputs.hermes-workspace` flake input that the Mission Control NixOS module imports. **Unrelated to the `hermes-workspace-src/` source directory** — that directory holds the paused Mission Control source code, not the killed flake input. | **killed** (J7 2026-07-09, intentionally — not the same as Mission Control) |
 | **Hermes Dashboard** | Stock Hermes dashboard at `http://100.77.7.1:9119` (basic-auth `j7`/scrypt). | live; embedded in Mission Control when live |
 | **Eye-of-Hermes** | PWA status widget at `:9120` proxied at `/widget/`. | live |
 | **external coder workers** | The 5 CLIs in `docs/external-workers.md`. | partial (4/5 installed) |
 | **Mnemosyne** | Primary agent memory layer. | live (dashboard down — runtime-state) |
 | **GBrain** | Project substrate (in scope per J7 2026-07-09). | spec only (Phase P11) |
 | **Honcho** | Semantic memory stack. | **decommission pending** (J7 2026-07-09: no combine-with-Mnemosyne needed; container still live, see `runtime-state.md` §2) |
-| **AMB** | Agent Mesh Bus (Redis broker on `:6380`). | Phase 1A live; Phase 1C partial |
+| **AMB** | Agent Mesh Bus (Redis broker on `:6380`). **Phase 1A** = broker live + plain requirepass; **Phase 1C** = per-wolf ACL material finalized (current P8 scope). | Phase 1A live; Phase 1C partial |
 
 ## Supersedes
 

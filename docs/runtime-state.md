@@ -37,6 +37,7 @@
 | 3001 | 0.0.0.0 | Forgejo | OK (LAN); public 404 (Outpost Traefik bug — see Top 5) |
 | 3002 | (should be 0.0.0.0) | Mission Control (Hermes Workspace) | **DEAD** — service not running |
 | 3005 | 127.0.0.1 | Free Model Roundup (Python) | OK |
+| 6380 | 127.0.0.1 | AMB (Redis broker, agent mesh bus) | partial — Phase 1A live; Phase 1C ACL finalization in progress (P8) |
 | 8000 | 0.0.0.0 | Honcho API (podman) | **DECOMMISSION PENDING** — J7 confirmed 2026-07-09: no migration to Mnemosyne needed (Mnemosyne is the surviving canonical memory layer); container still running, needs stop + reclaim. Action: Toki/Ishii. |
 | 8001 | 127.0.0.1 | Sanctuary Launcher | OK |
 | 8081 | 0.0.0.0 | it-tools (podman) | OK |
@@ -44,7 +45,7 @@
 | 8642 | 0.0.0.0 | Multiplex (system) | OK (PID 490006; `multiplex_profiles: false`) |
 | 8643 | (should be 0.0.0.0) | Ashitaka per-wolf | **MISSING** — PID 20888 alive but unbound (P0) |
 | 8644-8652 | 0.0.0.0 | 9 per-wolf gateways | OK (ishii, jigo, kohroku, mokku, moro, nago, okkoto, toki, yakkuru) |
-| 8765 | (should be 0.0.0.0) | Mnemosyne dashboard | **DOWN** — service crashed; restart procedure in `nixos-host-operations` skill |
+| 8765 | (should be 0.0.0.0) | Mnemosyne dashboard | **DOWN** — service crashed. Restart procedure: see §3 item 1 below for the single canonical restart command (this row intentionally does not duplicate it). |
 | 9119 | 0.0.0.0 | Hermes Dashboard | OK (basic-auth `j7`/scrypt) |
 | 9120 | 127.0.0.1 (proxied /widget/) | Eye-of-Hermes PWA | OK |
 | 9377 | 127.0.0.1 | Camofox HTTP API | OK |
@@ -56,7 +57,7 @@
 
 ## 3. Major broken / degraded items (top 5 by impact)
 
-1. **Mnemosyne dashboard `:8765` down.** Memory write-side works, audit/read-side dark. Restart per `bsm-secret-fetch-for-environmentfile.sh` helper. **Phase P4.**
+1. **Mnemosyne dashboard `:8765` down.** Memory write-side works, audit/read-side dark. **Phase P4.** Restart procedure: **`bsm-secret-fetch-for-environmentfile.sh` helper is the canonical restart command** (supersedes the older `nixos-host-operations` skill reference, which was the second-source duplication flagged in the Claude shakedown audit). **TODO [NEEDS-KOHROKU]:** confirm this is still current; the helper script may have been renamed/moved since the dossier was authored (2026-07-09). San will ping Kohroku before Sprint 0 opens.
 2. **Ashitaka port `:8643` unbound.** PID 20888 alive but no listener. The default port assignment in `wolfpack.nix` places ashitaka on `:8643`. Other 9 wolves bind correctly. **Phase P0.**
 3. **`code.starrwulfe.xyz` 404.** Outpost Traefik `dynamic.toml` points to `127.0.0.1:3001` instead of `100.77.7.1:3001`. One-line sed + Traefik HUP. **Phase P10.**
 4. **Mission Control dead (target: paused).** Per J7 directive 2026-07-09: do not allocate resources now. Source kept at `hermes-workspace-src/`. **Phase P2 deferred.**
