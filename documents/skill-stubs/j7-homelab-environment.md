@@ -1,0 +1,11 @@
+# `j7-homelab-environment` — Skill Stub
+
+**Purpose.** Local environment facts for J7's homelab: host topology (Mononoke NAS at 100.77.7.1 / Outpost VPS at 100.77.7.2 / Yoseba at 100.77.7.3), service conventions, storage paths (`/nas/hdd/agent-shared/`, `/nas/nvme/users/<u>/`), and agent operating context. Provides the shared local-knowledge layer that all wolves and San draw on so per-wolf reasoning stays grounded in actual deployment facts rather than training-data estimates.
+
+**When to load.** Any task that touches homelab-specific state: writing to NAS, querying local services (Forgejo, Nextcloud, Mnemosyne, Karakeep, Matrix, mail), referencing the 10 wolf profile paths (`~/.hermes/profiles/<wolf>/`), reasoning about cross-host routing (Mononoke ↔ Outpost via Tailscale), or needing to know whether a given action is in scope for this homelab (e.g. external web fetches are blocked — fall back to training knowledge with explicit freshness caveats).
+
+**What it forbids.** Treating training-data knowledge of "how Homelab X usually works" as authoritative for *this* homelab — the topology, port assignments, storage paths, and service-credential map are homelab-specific and change over time. Also forbids presenting knowledge estimates as live-verified data when live access fails (e.g. external `curl` returns empty); the stub convention is to state the access failure, name the data source, and advise verification. And forbids impersonating J7's git identity (commits must be by `San <san@mononoke.local>` unless J7 explicitly delegates).
+
+**Canonical home.** `/home/san/.hermes/skills/system/j7-homelab-environment/SKILL.md` (v1.0.0). Per-profile copies exist at `/home/san/.hermes/profiles/<wolf>/skills/system/j7-homelab-environment/` for wolf routing.
+
+**Key references inside the canonical.** Host assignments and Tailscale IP map; service-port matrix; storage-path conventions (`/nas/hdd/agent-shared/{reviews,WORKSPACES,wiki}`, `/nas/nvme/users/<u>/`, `~/.hermes/profiles/<wolf>/`, `~/.hermes/cache/bws_cache.json`); per-wolf Matrix and Stalwart mail credential locations in BWS; the `default`-assignee-aliased crash pattern (forbidden — use `san` or named wolf aliases on kanban cards).
