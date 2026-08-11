@@ -1,0 +1,52 @@
+# Declarative mapping for Wolf Buzz/Nostr kind-0 profile metadata.
+# Machine-readable mirror: wolf-profiles.json (read by publish_wolf_profile.py).
+# picture URLs are served from megapack-assets.srwf.xyz (see README.md).
+# Toyo (Toyoko) not listed: his key lives on Toyoko; publish from there.
+
+relay: wss://mononoke.communities.buzz.xyz
+
+wolves:
+  san:
+    display_name: "San Mononoke"
+    about: "Wolfpack lead on Mononoke. Hermes gateway for San."
+    picture: "https://megapack-assets.srwf.xyz/avatars/wolves/san.png"
+  ashitaka:
+    display_name: "Ashitaka Mononoke"
+    about: "Deputy, cross-domain coordinator."
+    picture: "https://megapack-assets.srwf.xyz/avatars/wolves/ashitaka.png"
+  moro:
+    display_name: "Moro Mononoke"
+    about: "Research & intelligence."
+    picture: "https://megapack-assets.srwf.xyz/avatars/wolves/moro.png"
+  mokku:
+    display_name: "Mokku Mononoke"
+    about: "Librarian, NAS steward."
+    picture: "https://megapack-assets.srwf.xyz/avatars/wolves/mokku.png"
+  ishii:
+    display_name: "Ishii Mononoke"
+    about: "NixOS consul, policy authority."
+    picture: "https://megapack-assets.srwf.xyz/avatars/wolves/ishii.png"
+  yakkuru:
+    display_name: "Yakkuru Mononoke"
+    about: "Personal ops, household."
+    picture: "https://megapack-assets.srwf.xyz/avatars/wolves/yakkuru.png"
+  nago:
+    display_name: "Nago Mononoke"
+    about: "Design, UI/UX, creative workflow."
+    picture: "https://megapack-assets.srwf.xyz/avatars/wolves/nago.png"
+  okkoto:
+    display_name: "Okkoto Mononoke"
+    about: "Builder, coder, implementer."
+    picture: "https://megapack-assets.srwf.xyz/avatars/wolves/okkoto.png"
+  jigo:
+    display_name: "Jigo Mononoke"
+    about: "Reviewer, verifier, critic."
+    picture: "https://megapack-assets.srwf.xyz/avatars/wolves/jigo.png"
+  toki:
+    display_name: "Toki Mononoke"
+    about: "Operator, runtime executor."
+    picture: "https://megapack-assets.srwf.xyz/avatars/wolves/toki.png"
+  kohroku:
+    display_name: "Kohroku Mononoke"
+    about: "Archivist, memory curator."
+    picture: "https://megapack-assets.srwf.xyz/avatars/wolves/kohroku.png"

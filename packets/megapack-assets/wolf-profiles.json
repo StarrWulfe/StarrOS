@@ -1,0 +1,71 @@
+{
+  "relay": "wss://mononoke.communities.buzz.xyz",
+  "wolves": {
+    "san": {
+      "display_name": "San Mononoke",
+      "about": "Wolfpack lead on Mononoke. Hermes gateway for San.",
+      "picture": "https://megapack-assets.srwf.xyz/avatars/wolves/san.png",
+      "key_env": "~/.hermes/.env"
+    },
+    "ashitaka": {
+      "display_name": "Ashitaka Mononoke",
+      "about": "Deputy, cross-domain coordinator.",
+      "picture": "https://megapack-assets.srwf.xyz/avatars/wolves/ashitaka.png",
+      "key_env": "~/.hermes/profiles/ashitaka/.env"
+    },
+    "moro": {
+      "display_name": "Moro Mononoke",
+      "about": "Research & intelligence.",
+      "picture": "https://megapack-assets.srwf.xyz/avatars/wolves/moro.png",
+      "key_env": "~/.hermes/profiles/moro/.env"
+    },
+    "mokku": {
+      "display_name": "Mokku Mononoke",
+      "about": "Librarian, NAS steward.",
+      "picture": "https://megapack-assets.srwf.xyz/avatars/wolves/mokku.png",
+      "key_env": "~/.hermes/profiles/mokku/.env"
+    },
+    "ishii": {
+      "display_name": "Ishii Mononoke",
+      "about": "NixOS consul, policy authority.",
+      "picture": "https://megapack-assets.srwf.xyz/avatars/wolves/ishii.png",
+      "key_env": "~/.hermes/profiles/ishii/.env"
+    },
+    "yakkuru": {
+      "display_name": "Yakkuru Mononoke",
+      "about": "Personal ops, household.",
+      "picture": "https://megapack-assets.srwf.xyz/avatars/wolves/yakkuru.png",
+      "key_env": "~/.hermes/profiles/yakkuru/.env"
+    },
+    "nago": {
+      "display_name": "Nago Mononoke",
+      "about": "Design, UI/UX, creative workflow.",
+      "picture": "https://megapack-assets.srwf.xyz/avatars/wolves/nago.png",
+      "key_env": "~/.hermes/profiles/nago/.env"
+    },
+    "okkoto": {
+      "display_name": "Okkoto Mononoke",
+      "about": "Builder, coder, implementer.",
+      "picture": "https://megapack-assets.srwf.xyz/avatars/wolves/okkoto.png",
+      "key_env": "~/.hermes/profiles/okkoto/.env"
+    },
+    "jigo": {
+      "display_name": "Jigo Mononoke",
+      "about": "Reviewer, verifier, critic.",
+      "picture": "https://megapack-assets.srwf.xyz/avatars/wolves/jigo.png",
+      "key_env": "~/.hermes/profiles/jigo/.env"
+    },
+    "toki": {
+      "display_name": "Toki Mononoke",
+      "about": "Operator, runtime executor.",
+      "picture": "https://megapack-assets.srwf.xyz/avatars/wolves/toki.png",
+      "key_env": "~/.hermes/profiles/toki/.env"
+    },
+    "kohroku": {
+      "display_name": "Kohroku Mononoke",
+      "about": "Archivist, memory curator.",
+      "picture": "https://megapack-assets.srwf.xyz/avatars/wolves/kohroku.png",
+      "key_env": "~/.hermes/profiles/kohroku/.env"
+    }
+  }
+}
