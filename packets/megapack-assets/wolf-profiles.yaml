@@ -50,3 +50,7 @@ wolves:
     display_name: "Kohroku Mononoke"
     about: "Archivist, memory curator."
     picture: "https://megapack-assets.srwf.xyz/avatars/wolves/kohroku.png"
+  toyo:
+    display_name: "Toyo Toyoko"
+    about: "Lead of the Toyoko node of the Wolfpack (MegaPack); peer in the one pack with San. Local council: Hiyoshi, Kosugi, Gakugei, Myoren, Daikan."
+    picture: "https://megapack-assets.srwf.xyz/avatars/wolves/toyo.png"
