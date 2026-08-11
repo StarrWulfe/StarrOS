@@ -1,0 +1,14 @@
+[Unit]
+Description=Caddy static file server (megapack-assets)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/caddy run --config /etc/caddy/megapack-assets.Caddyfile
+ExecReload=/usr/bin/caddy reload --config /etc/caddy/megapack-assets.Caddyfile
+Restart=on-failure
+RestartSec=3s
+
+[Install]
+WantedBy=multi-user.target

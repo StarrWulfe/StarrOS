@@ -1,0 +1,24 @@
+{
+    admin off
+    auto_https off
+    log {
+        output stderr
+        format console
+    }
+}
+
+:8448 {
+    tls /etc/ssl/megapack-assets/cert.pem /etc/ssl/megapack-assets/private.key
+    root * /srv/megapack-assets
+    file_server
+    encode gzip
+    header {
+        X-Content-Type-Options "nosniff"
+        Cache-Control "public, max-age=86400"
+        -Server
+    }
+    @traversal {
+        path_regexp traversal (\.\.|%2e%2e)
+    }
+    respond @traversal 400
+}
